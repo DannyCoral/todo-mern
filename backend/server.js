@@ -34,6 +34,16 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/todos', require('./routes/todoRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 
+ process.on('uncaughtException', (err) => {
+    console.error('uncaughtException:', err);
+  });
+
+  process.on('unhandledRejection', (reason) => {
+    console.error('unhandledRejection:', reason);
+  });
+  app.get('/', (req, res) => {
+      res.json({ status: 'ok', message: 'API corriendo ✅' });
+    });
 // Conexión a MongoDB y arranque del servidor
 mongoose
   .connect(process.env.MONGO_URI)
@@ -44,4 +54,7 @@ mongoose
       startNotificationService(); // 👈 iniciamos el servicio de notificaciones
     });
   })
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.error('Error conectando a MongoDB:', err);
+    process.exit(1);
+  });
