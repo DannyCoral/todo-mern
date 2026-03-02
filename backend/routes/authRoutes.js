@@ -31,7 +31,10 @@ router.get('/google/callback',
     });
 
     // Redirigimos al frontend con el token en la URL
-    res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}&user=${encodeURIComponent(user)}`);
+    const clientUrl = process.env.CLIENT_URL?.startsWith('http')
+      ? process.env.CLIENT_URL
+      : `https://${process.env.CLIENT_URL}`;
+    res.redirect(`${clientUrl}/auth/callback?token=${token}&user=${encodeURIComponent(user)}`);
   }
 );
 
