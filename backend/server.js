@@ -10,6 +10,9 @@ const { startNotificationService } = require('./services/notificationService');
 
 const app = express();
 
+// Confiar en el proxy de Railway (necesario para HTTPS)
+app.set('trust proxy', 1);
+
 // Middlewares globales
 const allowedOrigins = [
   process.env.CLIENT_URL,
